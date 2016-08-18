@@ -15,13 +15,18 @@ class App extends Component {
     }
   }
 
-  componentDidMount () {
+  refreshItems = () => {
     fetch(`https://one-list-api.herokuapp.com/items?access_token=${TOKEN}`)
     .then((resp) => { return resp.json() })
     .then((data) => {
       this.setState({ listItems: data })
           console.log('data')
     })
+  }
+
+  componentDidMount () {
+    this.refreshItems()
+    setInterval(this.refreshItems, 500)
   }
 
   // add the new list text from Input to the state listItems
