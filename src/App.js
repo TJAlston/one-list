@@ -16,11 +16,11 @@ class App extends Component {
   }
 
   componentDidMount () {
-    console.log('mount')
     fetch(`https://one-list-api.herokuapp.com/items?access_token=${TOKEN}`)
     .then((resp) => { return resp.json() })
     .then((data) => {
       this.setState({ listItems: data })
+          console.log('data')
     })
   }
 
@@ -74,7 +74,8 @@ class App extends Component {
 
   removeItem = (index) => {
     const newListItems = this.state.listItems
-    fetch(`https://one-list-api.herokuapp.com/items?access_token=${TOKEN}`, {
+    const item = newListItems[index]
+    fetch(`https://one-list-api.herokuapp.com/items/${item.id}?access_token=${TOKEN}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' }
     })
