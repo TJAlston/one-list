@@ -3,7 +3,7 @@ import List from './List'
 import Input from './Input'
 import logo from './logo.svg'
 
-const TOKEN = 'illustriousvoyage'
+const TOKEN = 'whatever'
 
 class App extends Component {
 
@@ -13,6 +13,15 @@ class App extends Component {
       listItems: [
       ]
     }
+  }
+
+  componentDidMount () {
+    console.log('mount')
+    fetch(`https://one-list-api.herokuapp.com/items?access_token=${TOKEN}`)
+    .then((resp) => { return resp.json() })
+    .then((data) => {
+      this.setState({ listItems: data })
+    })
   }
 
   // add the new list text from Input to the state listItems
@@ -44,17 +53,36 @@ class App extends Component {
 
   completeItem = (index) => {
     const newListItems = this.state.listItems
-    newListItems[index].complete = !newListItems[index].complete
-    this.setState({
-      listItems: newListItems
+    const item = newListItems[index]
+    fetch(`https://one-list-api.herokuapp.com/items?access_token=${TOKEN}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        item: {
+          complete: !item.complete
+        }
+      })
+    })
+    .then((response) => { return response.json() })
+    .then((data) => {
+      newListItems[index] = data
+      this.setState({
+        listItems: newListItems
+      })
     })
   }
 
   removeItem = (index) => {
     const newListItems = this.state.listItems
-    newListItems.splice(index, 1)
-    this.setState({
-      listItems: newListItems
+    fetch(`https://one-list-api.herokuapp.com/items?access_token=${TOKEN}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(() => {
+      newListItems.splice(index, 1)
+      this.setState({
+        listItems: newListItems
+      })
     })
   }
 
@@ -68,12 +96,12 @@ class App extends Component {
           <List
             items={this.state.listItems}
             completeItem={this.completeItem}
-            removeItem={this.removeItem} />
+            removeItem={this.removeItem}/>
           <Input onAddToList={this.addToList}/>
         </main>
         <footer>
           <p><img src={logo} height="42" alt="React"/></p>
-          <p>&copy; 2016 Pickles of Awesome.</p>
+          <p>&copy; 2016 Tameka J. Alston.</p>
         </footer>
       </div>
     )
