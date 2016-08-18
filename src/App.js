@@ -59,7 +59,7 @@ class App extends Component {
   completeItem = (index) => {
     const newListItems = this.state.listItems
     const item = newListItems[index]
-    fetch(`https://one-list-api.herokuapp.com/items?access_token=${TOKEN}`, {
+    fetch(`https://one-list-api.herokuapp.com/items/${item.id}?access_token=${TOKEN}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
