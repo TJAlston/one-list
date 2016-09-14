@@ -1,15 +1,18 @@
-  function reducer(state = 0, action) {
+  function reducer (state = 0, action) {
     switch (action.type) {
-    case 'newListItem':
-      return state + 1
+      case 'NEW_ITEM':
+        return
 
-    case 'completeListItem':
-      return state - 1
+      case 'COMPLETE_ITEM':
+        return
 
-    case 'removeListItem':
-      return state - 1
+      case 'REMOVE_ITEM':
+        return
 
-    default:
-      return state
+      default:
+        return state
+      }
     }
-  }
+
+
+export default reducer
